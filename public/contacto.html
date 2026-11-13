@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto · Thaylor Hernandez</title>
+  <meta name="description" content="Formulario de contacto de Thaylor Hernandez.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html">Thaylor <span>Hernandez</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="site-nav" id="menu" aria-label="Principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#sobre-mi">Sobre mí</a></li>
+          <li><a href="index.html#habilidades">Habilidades</a></li>
+          <li><a href="index.html#proyectos">Proyectos</a></li>
+          <li><a class="btn btn--primary" href="contacto.html" aria-current="page">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <section class="glow">
+      <div class="container contact">
+        <div>
+          <a class="btn btn--ghost" href="index.html">← Volver al inicio</a>
+          <p class="eyebrow" style="margin-top:40px">Contacto</p>
+          <h1 class="page-head__title">Hablemos de tu proyecto</h1>
+          <p class="lead">¿Necesitas una página web, una animación 3D o un comercial de producto? Déjame tus datos y cuéntame qué necesitas; te responderé por el medio que prefieras.</p>
+          <ul class="chips" style="margin-top:24px">
+            <li class="chip">Desarrollo web</li><li class="chip">Animación 3D</li><li class="chip">Publicidad de producto</li><li class="chip">Simulaciones</li>
+          </ul>
+        </div>
+
+        <div>
+          <form class="form" id="contact-form" novalidate>
+            <h2>Envíame un mensaje</h2>
+
+            <div class="field" data-field="nombre">
+              <label for="nombre">Nombre *</label>
+              <input id="nombre" name="nombre" type="text" autocomplete="name" placeholder="Tu nombre completo" required>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+
+            <div class="form__row">
+              <div class="field" data-field="telefono">
+                <label for="telefono">Número de celular</label>
+                <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+57 300 000 0000">
+                <p class="field__error" aria-live="polite"></p>
+              </div>
+              <div class="field" data-field="correo">
+                <label for="correo">Correo electrónico</label>
+                <input id="correo" name="correo" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+                <p class="field__error" aria-live="polite"></p>
+              </div>
+            </div>
+            <p class="form__hint">Deja tu número, tu correo o ambos para poder responderte.</p>
+
+            <fieldset class="field">
+              <legend>Tipo de proyecto</legend>
+              <div class="options">
+                <input type="radio" id="t-web" name="tipo" value="Página web" checked><label for="t-web">Página web</label>
+                <input type="radio" id="t-3d" name="tipo" value="Animación 3D"><label for="t-3d">Animación 3D</label>
+                <input type="radio" id="t-pub" name="tipo" value="Publicidad"><label for="t-pub">Publicidad</label>
+                <input type="radio" id="t-otro" name="tipo" value="Otro"><label for="t-otro">Otro</label>
+              </div>
+            </fieldset>
+
+            <div class="field" data-field="mensaje">
+              <label for="mensaje">¿Qué necesitas? *</label>
+              <textarea id="mensaje" name="mensaje" placeholder="Cuéntame sobre tu proyecto: qué quieres hacer, para cuándo lo necesitas y cualquier detalle útil." required></textarea>
+              <p class="field__error" aria-live="polite"></p>
+            </div>
+
+            <!-- Campo trampa contra robots: las personas no lo ven -->
+            <div class="hp" aria-hidden="true">
+              <label for="sitio">No llenes este campo</label>
+              <input id="sitio" name="sitio" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <p class="form__status" role="alert"></p>
+
+            <button class="btn btn--primary btn--block" type="submit">Enviar mensaje →</button>
+          </form>
+
+          <div class="form form-success" id="form-success" tabindex="-1" hidden>
+            <svg viewBox="0 0 72 72" fill="none" aria-hidden="true"><circle cx="36" cy="36" r="35" fill="#7C6CFF" fill-opacity=".18" stroke="#7C6CFF" stroke-width="2"/><path d="M24 37l8 8 16-17" stroke="#7C6CFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h2>¡Gracias por escribirme!</h2>
+            <p class="muted">Recibí tu mensaje. Te contactaré pronto por el número o el correo que dejaste.</p>
+            <div class="hero__actions" style="justify-content:center">
+              <a class="btn btn--primary" href="index.html">Volver al inicio</a>
+              <button class="btn btn--ghost" type="button" id="form-reset">Enviar otro mensaje</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><a href="index.html#proyectos">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

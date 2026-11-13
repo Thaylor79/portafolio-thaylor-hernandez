@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programación · Thaylor Hernandez</title>
+  <meta name="description" content="Proyectos web de Thaylor Hernandez.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="theme-web">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html">Thaylor <span>Hernandez</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="site-nav" id="menu" aria-label="Principal">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#sobre-mi">Sobre mí</a></li>
+          <li><a href="index.html#habilidades">Habilidades</a></li>
+          <li><a href="index.html#proyectos" aria-current="page">Proyectos</a></li>
+          <li><a class="btn btn--primary" href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <section class="page-head glow">
+      <div class="container">
+        <div class="page-head__top">
+          <a class="btn btn--ghost" href="index.html#proyectos">← Volver al inicio</a>
+          <span class="soft">Carpeta 01 · Programación</span>
+        </div>
+        <h1 class="page-head__title">Programación</h1>
+        <p class="lead">Proyectos web hechos con HTML, CSS, JavaScript y React: desde manipulación del DOM hasta consumo de APIs y componentes con hooks.</p>
+        <ul class="chips" style="margin-top:24px">
+          <li class="chip">5 proyectos</li><li class="chip">2 con APIs</li><li class="chip">2 en React</li>
+        </ul>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <h2 class="eyebrow">Proyectos web</h2>
+        <div class="grid grid--3" data-project-grid="web"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><a href="index.html#proyectos">Proyectos</a> · <a href="contacto.html">Contacto</a></p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

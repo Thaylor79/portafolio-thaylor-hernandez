@@ -1,0 +1,435 @@
+/* ==========================================================
+   Portafolio · Thaylor Hernandez
+   Estilos base (mobile-first). Colores y medidas tomados
+   del wireframe en Figma.
+   ========================================================== */
+
+/* ---------- 0. Fuentes (incluidas en /fonts, funcionan sin internet) ---------- */
+@font-face { font-family: "Inter"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-600-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/inter-latin-700-normal.woff2") format("woff2"); }
+@font-face { font-family: "Anton"; font-weight: 400; font-style: normal; font-display: swap; src: url("../fonts/anton-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Caveat"; font-weight: 700; font-style: normal; font-display: swap; src: url("../fonts/caveat-latin-700-normal.woff2") format("woff2"); }
+
+/* ---------- 1. Variables ---------- */
+:root {
+  --bg: #0f1117;
+  --surface: #171a23;
+  --surface-2: #1c1f2a;
+  --border: #262a36;
+  --text: #f2f3f7;
+  --text-muted: #b4b9c9;
+  --text-soft: #8a90a6;
+  --red: #ff3b2f;
+  --violet: #7c6cff;
+  --orange: #ff8a2a;
+  --paper: #e9dfc8;
+  --accent: var(--red);
+
+  --radius-sm: 12px;
+  --radius: 20px;
+  --radius-lg: 24px;
+  --container: 1280px;
+  --pad: 24px;
+  --header-h: 72px;
+
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cada carpeta tiene su color: Programación violeta, 3D naranja */
+.theme-web { --accent: var(--violet); }
+.theme-3d { --accent: var(--orange); }
+
+/* ---------- 2. Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+body {
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; color: inherit; }
+ul { list-style: none; padding: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- 3. Utilidades ---------- */
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--pad); }
+.section { padding-block: 64px; }
+.eyebrow {
+  font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+}
+.section-title { font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.15; margin-bottom: 16px; }
+.lead { font-size: clamp(1.0625rem, 2vw, 1.375rem); color: var(--text-muted); max-width: 780px; }
+.muted { color: var(--text-muted); }
+.soft { color: var(--text-soft); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Brillo de fondo (elipse difuminada del diseño) */
+.glow { position: relative; isolation: isolate; overflow: hidden; }
+.glow::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  width: 900px; height: 900px; top: -420px; right: -320px; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 34%, transparent) 0%, transparent 62%);
+}
+
+/* ---------- 4. Componentes ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 10px 20px; border-radius: 999px;
+  font-size: 0.9375rem; font-weight: 600; cursor: pointer;
+  border: 1px solid transparent; transition: transform .2s var(--ease), background .2s, border-color .2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn--primary { background: var(--accent); color: var(--bg); }
+.btn--ghost { background: var(--surface-2); border-color: var(--border); color: var(--text); }
+.btn--ghost:hover { border-color: var(--accent); }
+.btn--block { width: 100%; }
+
+.chip {
+  display: inline-flex; align-items: center; padding: 7px 14px; border-radius: 999px;
+  font-size: 0.875rem; font-weight: 500;
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.chip--accent { background: color-mix(in srgb, var(--accent) 15%, transparent); border-color: transparent; color: var(--accent); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.card {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  transition: transform .25s var(--ease), border-color .25s;
+}
+.card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.card__media { position: relative; aspect-ratio: 16 / 9; background: color-mix(in srgb, var(--accent) 16%, var(--surface)); overflow: hidden; }
+.card__media img { width: 100%; height: 100%; object-fit: cover; }
+.card__badge {
+  position: absolute; top: 12px; left: 12px; padding: 5px 12px; border-radius: 14px;
+  font-size: 0.75rem; font-weight: 600; background: rgba(10, 12, 16, .78);
+}
+.card__body { display: flex; flex-direction: column; gap: 6px; padding: 20px 22px 22px; flex: 1; }
+.card__tag { font-size: 0.8125rem; font-weight: 600; color: var(--accent); }
+.card__title { font-size: 1.375rem; line-height: 1.25; }
+.card__text { color: var(--text-muted); font-size: 0.9375rem; }
+.card__tools { color: var(--text-soft); font-size: 0.8125rem; margin-top: auto; padding-top: 8px; }
+.card__link { color: var(--accent); font-weight: 600; font-size: 0.9375rem; }
+
+/* Placeholder cuando aún no hay captura */
+.placeholder {
+  display: grid; place-items: center; width: 100%; height: 100%;
+  color: var(--text-soft); font-size: 0.875rem; text-align: center; padding: 16px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 14px, rgba(255,255,255,.025) 14px 28px),
+    color-mix(in srgb, var(--accent) 14%, var(--surface));
+}
+
+.grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
+
+/* ---------- 5. Encabezado y navegación ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50; height: var(--header-h);
+  background: rgba(15, 17, 23, .82); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .container { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { font-weight: 600; font-size: 1.0625rem; }
+.logo span { color: var(--red); }
+
+.nav-toggle {
+  display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+  background: var(--surface-2); border: 1px solid var(--border); cursor: pointer;
+}
+.nav-toggle__bar, .nav-toggle__bar::before, .nav-toggle__bar::after {
+  content: ""; display: block; width: 20px; height: 2px; background: var(--text); border-radius: 2px;
+  transition: transform .25s var(--ease), opacity .2s;
+}
+.nav-toggle__bar { position: relative; }
+.nav-toggle__bar::before { position: absolute; top: -6px; }
+.nav-toggle__bar::after { position: absolute; top: 6px; }
+.nav-open .nav-toggle__bar { background: transparent; }
+.nav-open .nav-toggle__bar::before { transform: translateY(6px) rotate(45deg); }
+.nav-open .nav-toggle__bar::after { transform: translateY(-6px) rotate(-45deg); }
+
+.site-nav {
+  position: fixed; inset: var(--header-h) 0 auto 0; padding: 16px var(--pad) 28px;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  transform: translateY(-110%); opacity: 0; pointer-events: none;
+  transition: transform .3s var(--ease), opacity .2s;
+}
+.nav-open .site-nav { transform: none; opacity: 1; pointer-events: auto; }
+.site-nav ul { display: flex; flex-direction: column; gap: 4px; }
+.site-nav a:not(.btn) { display: block; padding: 12px 4px; font-weight: 500; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+.site-nav a:not(.btn):hover, .site-nav a[aria-current="page"] { color: var(--text); }
+.site-nav .btn { margin-top: 12px; width: 100%; }
+
+/* ---------- 6. Hero ---------- */
+.hero { padding-block: 56px 24px; }
+.hero__hello { font-size: clamp(1rem, 2.2vw, 1.25rem); color: var(--text-muted); }
+.hero__hello strong { color: var(--text); font-weight: 600; }
+.hero__mega { position: relative; margin: 4px 0 20px; }
+.hero__desc { max-width: 560px; font-size: clamp(0.9375rem, 1.6vw, 1.0625rem); color: var(--text-muted); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hero .chips { margin-top: 24px; }
+
+/* ---------- 7. Sobre mí ---------- */
+.about .section-title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; font-size: clamp(2.25rem, 6vw, 4rem); line-height: 1; }
+.about { display: grid; gap: 32px; align-items: center; }
+.about__photo {
+  width: 100%; max-width: 320px; aspect-ratio: 1; border-radius: var(--radius-lg); overflow: hidden; margin-inline: auto;
+  background: linear-gradient(135deg, var(--violet), var(--orange));
+  display: grid; place-items: center; font-size: 4rem; font-weight: 700; color: var(--bg);
+}
+.about__photo img { width: 100%; height: 100%; object-fit: cover; }
+.about p + p { margin-top: 12px; }
+
+/* ---------- 8. Habilidades ---------- */
+.skills { display: grid; gap: 20px; grid-template-columns: 1fr; }
+.skill-group { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.skill-group h3 { font-size: 1.125rem; margin-bottom: 14px; }
+
+/* ---------- 9. Carpetas (Proyectos en inicio) ---------- */
+.folder { --accent: var(--violet); }
+.folder--3d { --accent: var(--orange); }
+.folder .card__media { aspect-ratio: auto; display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; padding: 12px; height: 220px; }
+.folder .card__media > * { border-radius: 10px; overflow: hidden; }
+.folder .card__media > :first-child { grid-row: span 2; }
+.folder__num { display: flex; align-items: center; gap: 10px; font-size: 0.8125rem; font-weight: 600; letter-spacing: .12em; color: var(--accent); }
+.folder__num svg { width: 24px; height: 24px; }
+.folder .card__title { font-size: 1.75rem; }
+.folder__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 10px; }
+
+/* ---------- 10. Encabezado de carpeta / detalle ---------- */
+.page-head { padding-block: 40px 8px; }
+.page-head__top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 40px; }
+.page-head__title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: clamp(3rem, 11vw, 8rem); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 20px; }
+.subsection { margin-top: 48px; }
+.subsection .eyebrow { margin-bottom: 20px; }
+
+.detail { display: grid; gap: 32px; padding-bottom: 48px; }
+.detail__title { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; letter-spacing: 0.01em; margin: 16px 0 20px; }
+.detail__media { border-radius: var(--radius); overflow: hidden; aspect-ratio: 16 / 9; background: var(--surface); }
+.detail__media img { width: 100%; height: 100%; object-fit: cover; }
+.detail__label { font-size: 0.8125rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--text-soft); margin: 32px 0 14px; }
+.detail__points li { position: relative; padding-left: 22px; margin-bottom: 8px; }
+.detail__points li::before { content: ""; position: absolute; left: 4px; top: 0.72em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.detail__nav { display: flex; gap: 12px; justify-content: space-between; padding-bottom: 64px; }
+.detail__nav .btn { flex: 1; }
+
+/* ---------- 11. Contacto ---------- */
+.contact { display: grid; gap: 40px; padding-block: 40px 72px; }
+.form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; display: grid; gap: 18px; }
+.form h2 { font-size: 1.5rem; }
+.field { display: grid; gap: 8px; }
+.field label, .field legend { font-size: 0.875rem; font-weight: 500; }
+.field input, .field textarea {
+  width: 100%; padding: 14px 16px; border-radius: var(--radius-sm);
+  background: var(--surface-2); border: 1px solid var(--border); transition: border-color .2s;
+}
+.field textarea { min-height: 150px; resize: vertical; }
+.field input::placeholder, .field textarea::placeholder { color: var(--text-soft); }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+.field.has-error input, .field.has-error textarea { border-color: #ff5d6c; }
+.field__error { color: #ff7a87; font-size: 0.8125rem; min-height: 1em; }
+.form__row { display: grid; gap: 18px; }
+.form__hint { font-size: 0.8125rem; color: var(--text-soft); margin-top: -8px; }
+fieldset.field { border: 0; padding: 0; }
+.options { display: flex; flex-wrap: wrap; gap: 8px; }
+.options input { position: absolute; opacity: 0; pointer-events: none; }
+.options label {
+  padding: 8px 14px; border-radius: 16px; cursor: pointer; font-size: 0.875rem; color: var(--text-muted);
+  background: var(--surface-2); border: 1px solid var(--border); transition: .2s;
+}
+.options input:checked + label { color: var(--accent); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.options input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.form-success { text-align: center; display: grid; gap: 16px; justify-items: center; padding: 32px 8px; }
+.form-success svg { width: 72px; height: 72px; }
+[hidden] { display: none !important; }
+
+/* ---------- 12. Pie de página ---------- */
+.site-footer { border-top: 1px solid var(--border); padding-block: 28px; color: var(--text-soft); font-size: 0.875rem; }
+.site-footer .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+.site-footer a:hover { color: var(--text); }
+
+/* ==========================================================
+   13. Responsive
+   ========================================================== */
+@media (min-width: 640px) {
+  :root { --pad: 32px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .skills { grid-template-columns: repeat(2, 1fr); }
+  .form { padding: 36px; }
+  .form__row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (min-width: 900px) {
+  :root { --pad: 48px; --header-h: 80px; }
+  .section { padding-block: 96px; }
+  .hero { padding-block: 96px 40px; }
+
+  /* Menú horizontal en escritorio */
+  .nav-toggle { display: none; }
+  .site-nav { position: static; inset: auto; padding: 0; background: none; border: 0; transform: none; opacity: 1; pointer-events: auto; }
+  .site-nav ul { flex-direction: row; align-items: center; gap: 28px; }
+  .site-nav a:not(.btn) { padding: 0; border: 0; }
+  .site-nav .btn { margin: 0; width: auto; }
+
+  .about { grid-template-columns: 320px 1fr; gap: 64px; }
+  .skills { grid-template-columns: repeat(3, 1fr); }
+  .folder .card__media { height: 320px; }
+  .detail { grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; padding-top: 16px; }
+  .detail__aside { position: sticky; top: calc(var(--header-h) + 24px); }
+  .detail__nav .btn { flex: 0 0 auto; }
+  .contact { grid-template-columns: 1fr 1.15fr; gap: 80px; padding-block: 80px 112px; }
+}
+
+@media (min-width: 1100px) {
+  :root { --pad: 80px; }
+  .grid--3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Enlace para saltar al contenido (visible solo con teclado) */
+.skip-link { position: absolute; left: 16px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: 10px; background: var(--accent); color: var(--bg); font-weight: 600; }
+.skip-link:focus { top: 12px; }
+.folder .placeholder { border: 1px solid var(--border); font-size: 0.8125rem; }
+
+/* ==========================================================
+   14. Estilo editorial (títulos grandes, cinta, notas a mano)
+   ========================================================== */
+/* Textura de papel muy sutil sobre todo el sitio */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 200; pointer-events: none; opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Títulos gigantes: PORTAFOLIO, HABILIDADES, PROYECTOS */
+.mega {
+  font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(3.25rem, 15vw, 13.5rem); line-height: 0.88; letter-spacing: 0.005em;
+  color: var(--text);
+}
+.hero__mega { font-size: clamp(4rem, 17.5vw, 15.5rem); }
+
+/* Nota escrita a mano */
+.hand { font-family: var(--font-hand); font-weight: 700; font-size: clamp(1.375rem, 3vw, 2rem); color: var(--accent); line-height: 1; display: inline-block; transform: rotate(-3deg); }
+
+/* Encabezado de sección */
+.section-head { margin-bottom: 40px; }
+.section-head .hand { margin-left: 4px; margin-bottom: 4px; }
+.section-head .mega::after { content: ""; display: block; width: 72px; height: 6px; margin-top: 18px; background: var(--accent); }
+
+/* Cinta adhesiva (como en un collage) */
+.tape {
+  display: inline-block; padding: 6px 16px 4px;
+  font-family: var(--font-hand); font-weight: 700; text-transform: none; letter-spacing: 0;
+  font-size: clamp(1.125rem, 2.6vw, 2rem); line-height: 1.1; color: #1b1712;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  box-shadow: 0 6px 18px rgba(0,0,0,.35);
+  clip-path: polygon(2% 8%, 98% 0, 100% 90%, 1% 100%);
+}
+.tape--hero { position: absolute; right: 2%; bottom: -0.35em; transform: rotate(-5deg); }
+.tape--hero::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 6px, rgba(255,255,255,.18) 6px 7px); pointer-events: none; }
+
+/* Habilidades con barra de experiencia */
+.skills-list { display: grid; gap: 14px; grid-template-columns: 1fr; }
+.skill {
+  display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.skill__icon {
+  flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px;
+  background: var(--text); color: var(--bg); font-weight: 700; font-size: 1.0625rem;
+}
+.skill__info { flex: 1; min-width: 0; }
+.skill__top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.skill__name { font-size: 1.0625rem; font-weight: 600; }
+.skill__level { font-family: var(--font-hand); font-weight: 700; font-size: 1.25rem; color: var(--accent); white-space: nowrap; }
+.skill__bar { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.skill__bar span {
+  display: block; height: 100%; width: 0; border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 60%, #fff));
+  transition: width 1.2s var(--ease);
+}
+.skills-list.is-visible .skill__bar span { width: var(--level); }
+.skills-list .skill:nth-child(2) .skill__bar span { transition-delay: .08s; }
+.skills-list .skill:nth-child(3) .skill__bar span { transition-delay: .16s; }
+.skills-list .skill:nth-child(4) .skill__bar span { transition-delay: .24s; }
+.skills-list .skill:nth-child(5) .skill__bar span { transition-delay: .32s; }
+.skills-list .skill:nth-child(6) .skill__bar span { transition-delay: .40s; }
+.skills-list .skill:nth-child(7) .skill__bar span { transition-delay: .48s; }
+
+@media (min-width: 640px) { .skills-list { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .skills-list { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 639px) { .tape--hero { position: relative; right: auto; bottom: auto; display: table; margin: 14px 0 0 auto; } }
+@media (prefers-reduced-motion: reduce) { .skill__bar span { width: var(--level); } }
+.contact .page-head__title { font-size: clamp(3rem, 7vw, 5.75rem); }
+@media (max-width: 639px) { .about__photo { max-width: 220px; margin-inline: 0; } }
+
+/* Botones del inicio: por encima del título gigante (antes el título tapaba el clic)
+   y con la tipografía a mano de "lo que sé usar" */
+.hero__actions { position: relative; z-index: 2; }
+.hero__actions .btn { font-family: var(--font-hand); font-weight: 700; font-size: 1.5rem; line-height: 1; padding: 8px 26px; }
+
+/* Logos de las apps en Habilidades */
+img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-radius: 0; background: none; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,.35)); }
+
+/* "Sobre mí" con la letra a mano (Caveat) y un poco más grande */
+.about .eyebrow { font-family: var(--font-hand); font-weight: 700; font-size: clamp(1.75rem, 3.6vw, 2.5rem); text-transform: none; letter-spacing: 0; line-height: 1; color: var(--accent); display: inline-block; transform: rotate(-3deg); margin-bottom: 10px; }
+
+/* ---------- Color propio de cada habilidad ----------
+   Cada <li class="skill"> define su color con --skill-color en index.html */
+.skill { transition: border-color .25s, transform .25s; }
+.skill:hover { border-color: color-mix(in srgb, var(--skill-color, var(--accent)) 60%, var(--border)); transform: translateY(-2px); }
+.skill__level { color: var(--skill-color, var(--accent)); }
+.skill__bar span {
+  background: linear-gradient(90deg, var(--skill-color, var(--accent)), color-mix(in srgb, var(--skill-color, var(--accent)) 55%, #fff));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--skill-color, var(--accent)) 45%, transparent);
+}
+
+/* ==========================================================
+   Tipografía de tarjetas y carpetas (combina con los títulos grandes)
+   Anton  → títulos   ·   Caveat → notas a mano   ·   Inter → textos
+   ========================================================== */
+.card__title {
+  font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(1.625rem, 2.4vw, 1.875rem); line-height: 1; letter-spacing: 0.01em;
+}
+.card__tag { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+.card__text { font-size: 0.9875rem; line-height: 1.55; }
+.card__tools { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-soft); }
+.card__link { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; white-space: nowrap; }
+
+/* Carpetas de la sección Proyectos */
+.folder .card__body { padding: 24px 26px 26px; gap: 10px; }
+.folder__num {
+  font-family: var(--font-hand); font-weight: 700; font-size: 1.625rem;
+  letter-spacing: 0; text-transform: none; line-height: 1; transform: rotate(-2deg); transform-origin: left;
+}
+.folder__num svg { width: 26px; height: 26px; }
+.folder .card__title { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 0.92; margin: 2px 0 4px; }
+.folder .card__text { font-size: 1rem; max-width: 46ch; }
+.folder__foot { align-items: center; padding-top: 16px; margin-top: auto; border-top: 1px solid var(--border); }
+.folder__foot .card__tools { padding-top: 0; }
+
+/* Pie de página sin el texto de derechos */
+.site-footer .container { justify-content: center; }
+
+/* ---------- Envío del formulario ---------- */
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form__status { color: #ff7a87; font-size: 0.9375rem; font-weight: 600; }
+.form__status:empty { display: none; }
+.btn:disabled { opacity: 0.65; cursor: wait; transform: none; }
