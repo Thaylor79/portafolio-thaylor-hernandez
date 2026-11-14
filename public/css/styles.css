@@ -462,7 +462,7 @@ img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-
 
 .form legend { margin-bottom: 10px; }
 
-/* ---------- Cabeza girando 360° en "Sobre mí" ---------- */
+/* ---------- Cabeza flotando en "Sobre mí" ---------- */
 .about__photo--head {
   position: relative;
   background:
@@ -472,8 +472,8 @@ img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-
 }
 .head-spin {
   width: 82%; aspect-ratio: 1;
-  background: url("../img/cabeza-giro.webp?v=3") 0 0 / 600% 100% no-repeat;
-  animation: head-frames 4s step-end infinite, head-bob 4s ease-in-out infinite;
+  background: url("../img/cabeza-frente.webp?v=1") center / contain no-repeat;
+  animation: head-bob 4s ease-in-out infinite;
   translate: 0 -4%;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
 }
@@ -483,19 +483,8 @@ img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-
   background: rgba(0,0,0,.45); filter: blur(6px);
   animation: head-shadow 4s ease-in-out infinite;
 }
-/* De frente casi la mitad de la vuelta; el resto del giro va más rápido */
-@keyframes head-frames {
-  0%   { background-position: 0% 0; }
-  45%  { background-position: 20% 0; }
-  56%  { background-position: 40% 0; }
-  67%  { background-position: 60% 0; }
-  78%  { background-position: 80% 0; }
-  89%  { background-position: 100% 0; }
-  100% { background-position: 0% 0; }
-}
 @keyframes head-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5%); } }
 @keyframes head-shadow { 0%, 100% { scale: 1; opacity: 1; } 50% { scale: .8; opacity: .6; } }
-.about__photo--head:hover .head-spin { animation-duration: 2s, 4s; }
 @media (prefers-reduced-motion: reduce) {
   .head-spin, .head-shadow { animation: none; }
 }
