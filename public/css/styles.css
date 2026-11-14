@@ -433,3 +433,31 @@ img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-
 .form__status { color: #ff7a87; font-size: 0.9375rem; font-weight: 600; }
 .form__status:empty { display: none; }
 .btn:disabled { opacity: 0.65; cursor: wait; transform: none; }
+
+/* ==========================================================
+   Página de Contacto con la misma tipografía del inicio
+   Anton → títulos · Caveat → notas a mano · Inter → textos
+   ========================================================== */
+.contact .eyebrow {
+  font-family: var(--font-hand); font-weight: 700; text-transform: none; letter-spacing: 0;
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem); line-height: 1; color: var(--accent);
+  display: block; width: fit-content; transform: rotate(-3deg); transform-origin: left; margin: 40px 0 12px;
+}
+.contact .page-head__title { line-height: 0.92; margin-bottom: 24px; }
+.contact .lead { font-size: clamp(1.0625rem, 1.6vw, 1.25rem); line-height: 1.6; max-width: 46ch; }
+.contact .chip {
+  font-family: var(--font-hand); font-weight: 700; font-size: 1.3125rem; line-height: 1;
+  padding: 8px 16px 9px;
+}
+.contact > div > .btn--ghost,
+.form button[type="submit"] {
+  font-family: var(--font-hand); font-weight: 700; font-size: 1.375rem; line-height: 1; letter-spacing: 0;
+}
+.form h2 {
+  font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(2rem, 3.4vw, 2.75rem); line-height: 1; letter-spacing: 0.01em;
+}
+.form .field > label, .form legend { font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+.form button[type="submit"] { font-size: 1.625rem; }
+
+.form legend { margin-bottom: 10px; }
