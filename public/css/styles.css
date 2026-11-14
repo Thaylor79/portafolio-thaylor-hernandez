@@ -472,7 +472,7 @@ img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-
 }
 .head-spin {
   width: 82%; aspect-ratio: 1;
-  background: url("../img/cabeza-giro.webp") 0 0 / 600% 100% no-repeat;
+  background: url("../img/cabeza-giro.webp?v=3") 0 0 / 600% 100% no-repeat;
   animation: head-frames 4s step-end infinite, head-bob 4s ease-in-out infinite;
   translate: 0 -4%;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
