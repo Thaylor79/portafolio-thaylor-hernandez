@@ -24,6 +24,7 @@
   --red: #ff3b2f;
   --violet: #7c6cff;
   --orange: #ff8a2a;
+  --teal: #22c7b8;
   --paper: #e9dfc8;
   --accent: var(--red);
 
@@ -40,9 +41,10 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Cada carpeta tiene su color: Programación violeta, 3D naranja */
+/* Cada carpeta tiene su color: Programación violeta, 3D naranja, Ediciones turquesa */
 .theme-web { --accent: var(--violet); }
 .theme-3d { --accent: var(--orange); }
+.theme-edicion { --accent: var(--teal); }
 
 /* ---------- 2. Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -201,6 +203,7 @@ ul { list-style: none; padding: 0; }
 /* ---------- 9. Carpetas (Proyectos en inicio) ---------- */
 .folder { --accent: var(--violet); }
 .folder--3d { --accent: var(--orange); }
+.folder--edicion { --accent: var(--teal); }
 .folder .card__media { aspect-ratio: auto; display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; padding: 12px; height: 220px; }
 .folder .card__media > * { border-radius: 10px; overflow: hidden; }
 .folder .card__media > :first-child { grid-row: span 2; }
@@ -488,3 +491,52 @@ img.skill__icon { display: block; width: 52px; height: 52px; padding: 0; border-
 @media (prefers-reduced-motion: reduce) {
   .head-spin, .head-shadow { animation: none; }
 }
+
+
+/* ==========================================================
+   Videos: vista previa en tarjetas y reproductor en el detalle
+   ========================================================== */
+/* Tres carpetas en el inicio: 2 columnas en tablet (la tercera ocupa todo el ancho) y 3 en escritorio */
+@media (min-width: 640px) and (max-width: 1099px) {
+  .grid--folders > :nth-child(3) { grid-column: 1 / -1; }
+}
+@media (min-width: 1100px) {
+  .grid--folders { grid-template-columns: repeat(3, 1fr); }
+  .grid--folders .folder .card__media { height: 280px; }
+  .grid--folders .folder .card__title { font-size: clamp(2.25rem, 3.4vw, 3.25rem); }
+}
+
+.card__media .media-poster,
+.card__preview {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.card__media .media-poster { position: relative; }
+.card__preview { opacity: 0; transition: opacity .3s var(--ease); background: transparent; }
+.card.is-playing .card__preview { opacity: 1; }
+
+/* Videos verticales (9:16): se ven completos sobre una copia borrosa */
+.card__media--vertical .media-back {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: blur(18px) brightness(.55); transform: scale(1.15);
+}
+.card__media--vertical .media-poster,
+.card__media--vertical .card__preview { object-fit: contain; }
+.card__media--vertical .media-poster { position: absolute; inset: 0; }
+
+/* Ícono de reproducir */
+.card__play {
+  position: absolute; left: 14px; bottom: 14px; z-index: 2;
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(15, 17, 23, .72); color: #fff; border: 1px solid rgba(255,255,255,.18);
+  backdrop-filter: blur(6px); transition: transform .25s var(--ease), background .25s var(--ease), opacity .25s;
+}
+.card__play svg { width: 20px; height: 20px; margin-left: 2px; }
+.card:hover .card__play, .card:focus-visible .card__play { transform: scale(1.08); background: var(--accent); }
+.card.is-playing .card__play { opacity: 0; }
+.card__badge { z-index: 2; }
+
+/* Reproductor en la página del proyecto */
+.detail__media--video { background: #000; }
+.detail__video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.detail__media--vertical { aspect-ratio: 9 / 16; max-height: 80vh; max-width: min(100%, 45vh); margin-inline: auto; }
+.theme-web .card__media img, .theme-web .detail__media img { object-position: top; }

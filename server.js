@@ -49,13 +49,13 @@ app.use(express.json({ limit: "20kb" }));
 app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"] }));
 
 /* ---------- API: proyectos ---------- */
-const CAMPOS_PUBLICOS = "-_id id folder section badge tag title short desc tools points img";
+const CAMPOS_PUBLICOS = "-_id id folder section badge tag title short desc tools points img video preview vertical";
 
-// Todos los proyectos visibles (opcional: ?folder=web o ?folder=3d)
+// Todos los proyectos visibles (opcional: ?folder=web, ?folder=3d o ?folder=edicion)
 app.get("/api/proyectos", async (req, res) => {
   try {
     const filtro = { visible: true };
-    if (["web", "3d"].includes(req.query.folder)) filtro.folder = req.query.folder;
+    if (["web", "3d", "edicion"].includes(req.query.folder)) filtro.folder = req.query.folder;
     const proyectos = await Proyecto.find(filtro).select(CAMPOS_PUBLICOS).sort({ orden: 1 }).lean();
     res.json(proyectos);
   } catch (error) {
@@ -149,12 +149,14 @@ mongoose
   .then(async () => {
     console.log("✔ Conectado a MongoDB");
 
-    // La primera vez, la base de datos está vacía: se cargan los proyectos de data.js
-    if ((await Proyecto.estimatedDocumentCount()) === 0) {
-      const iniciales = leerProyectos();
-      await Proyecto.insertMany(iniciales);
-      console.log(`✔ Se cargaron ${iniciales.length} proyectos en la base de datos.`);
+    // Cada vez que arranca, la base de datos se pone al día con public/js/data.js:
+    // agrega los proyectos nuevos y actualiza los que cambiaron (según su id).
+    // Si en Atlas pusiste visible: false a alguno, se respeta.
+    const proyectos = leerProyectos();
+    for (const p of proyectos) {
+      await Proyecto.updateOne({ id: p.id }, { $set: p }, { upsert: true, runValidators: true });
     }
+    console.log(`✔ ${proyectos.length} proyectos sincronizados con la base de datos.`);
     if (!correoConfigurado()) console.warn("⚠ El correo no está configurado: los mensajes se guardarán, pero no te llegarán avisos.");
     app.listen(PUERTO, () => console.log(`✔ Portafolio listo en http://localhost:${PUERTO}`));
   })

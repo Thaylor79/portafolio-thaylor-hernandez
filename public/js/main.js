@@ -1,7 +1,7 @@
 /* ==========================================================
    Lógica del portafolio
    1. Menú móvil
-   2. Tarjetas de proyectos (Programación y 3D)
+   2. Tarjetas de proyectos (Programación, 3D y Ediciones)
    3. Página de detalle de un proyecto
    4. Formulario de contacto
    ========================================================== */
@@ -46,17 +46,76 @@ if (skillsList) {
 const escapeHTML = (text) =>
   String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-const mediaHTML = (project) =>
-  project.img
-    ? `<img src="${project.img}" alt="${escapeHTML(project.title)}" loading="lazy" width="960" height="540">`
-    : `<div class="placeholder">Captura del proyecto<br>próximamente</div>`;
+const PLAY_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.52.85l10.4-6.5a1 1 0 0 0 0-1.7L9.52 4.65A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>`;
+
+// Imagen (o portada) de la tarjeta. Si el proyecto tiene video, se agrega
+// un clip sin sonido que se reproduce al pasar el mouse.
+function cardMediaHTML(project) {
+  if (!project.img) return `<div class="placeholder">Captura del proyecto<br>próximamente</div>`;
+  const clip = project.preview || project.video;
+  const back = project.vertical ? `<img class="media-back" src="${project.img}" alt="" aria-hidden="true" loading="lazy">` : "";
+  const img = `<img class="media-poster" src="${project.img}" alt="${escapeHTML(project.title)}" loading="lazy" width="960" height="540">`;
+  if (!clip) return img;
+  return `${back}${img}
+    <video class="card__preview" data-src="${clip}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+    <span class="card__play" aria-hidden="true">${PLAY_ICON}</span>`;
+}
+
+// Imagen o reproductor del detalle
+function detailMediaHTML(project) {
+  if (project.video) {
+    return `<video class="detail__video" src="${project.video}" poster="${project.img || ""}" controls playsinline preload="metadata">
+        Tu navegador no puede reproducir este video.
+      </video>`;
+  }
+  if (project.img) return `<img src="${project.img}" alt="${escapeHTML(project.title)}" width="960" height="540">`;
+  return `<div class="placeholder">Captura del proyecto<br>próximamente</div>`;
+}
+
+/* Vista previa en las tarjetas:
+   - con mouse: se reproduce al pasar por encima
+   - en celular: se reproduce cuando la tarjeta está en pantalla */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const canHover = window.matchMedia("(hover: hover)").matches;
+
+function playPreview(card) {
+  const video = card.querySelector(".card__preview");
+  if (!video || reduceMotion) return;
+  if (!video.src) video.src = video.dataset.src;
+  video.play().then(() => card.classList.add("is-playing")).catch(() => {});
+}
+function stopPreview(card) {
+  const video = card.querySelector(".card__preview");
+  if (!video) return;
+  video.pause();
+  card.classList.remove("is-playing");
+}
+
+function activarPreviews(root) {
+  const cards = [...root.querySelectorAll(".card")].filter((c) => c.querySelector(".card__preview"));
+  if (!cards.length || reduceMotion) return;
+  if (canHover) {
+    cards.forEach((card) => {
+      card.addEventListener("mouseenter", () => playPreview(card));
+      card.addEventListener("mouseleave", () => stopPreview(card));
+      card.addEventListener("focus", () => playPreview(card));
+      card.addEventListener("blur", () => stopPreview(card));
+    });
+  } else if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? playPreview(e.target) : stopPreview(e.target)));
+    }, { threshold: 0.6 });
+    cards.forEach((card) => observer.observe(card));
+  }
+}
 
 /* ---------- 2. Tarjetas ---------- */
 function cardHTML(project) {
   const badge = project.badge ? `<span class="card__badge">${escapeHTML(project.badge)}</span>` : "";
+  const mediaClass = "card__media" + (project.vertical ? " card__media--vertical" : "");
   return `
     <a class="card" href="proyecto.html?id=${project.id}">
-      <div class="card__media">${mediaHTML(project)}${badge}</div>
+      <div class="${mediaClass}">${cardMediaHTML(project)}${badge}</div>
       <div class="card__body">
         <span class="card__tag">${escapeHTML(project.tag)}</span>
         <h3 class="card__title">${escapeHTML(project.title)}</h3>
@@ -108,6 +167,8 @@ function pintarProyectos(proyectos) {
       .join("");
   });
 
+  document.querySelectorAll("[data-project-grid], [data-project-sections]").forEach(activarPreviews);
+
   /* ---------- 3. Detalle ---------- */
   const detailRoot = document.querySelector("[data-project-detail]");
   if (detailRoot) {
@@ -142,13 +203,13 @@ function pintarProyectos(proyectos) {
             <span class="chip chip--accent">${escapeHTML(project.tag)}</span>
             <h1 class="detail__title">${escapeHTML(project.title)}</h1>
             <p class="lead">${escapeHTML(project.desc)}</p>
-            <h2 class="detail__label">${project.folder === "3d" ? "Herramientas" : "Tecnologías"}</h2>
+            <h2 class="detail__label">${project.folder === "web" ? "Tecnologías" : "Herramientas"}</h2>
             <ul class="chips">${project.tools.map((t) => `<li class="chip">${escapeHTML(t)}</li>`).join("")}</ul>
-            <h2 class="detail__label">${project.folder === "3d" ? "Qué hice" : "Qué hace"}</h2>
+            <h2 class="detail__label">${project.folder === "web" ? "Qué hace" : "Qué hice"}</h2>
             <ul class="detail__points">${project.points.map((t) => `<li>${escapeHTML(t)}</li>`).join("")}</ul>
           </div>
           <div class="detail__aside">
-            <div class="detail__media">${mediaHTML(project)}</div>
+            <div class="detail__media${project.vertical ? " detail__media--vertical" : ""}${project.video ? " detail__media--video" : ""}">${detailMediaHTML(project)}</div>
           </div>
         </article>
         <nav class="detail__nav" aria-label="Navegación entre proyectos">
